@@ -1,17 +1,17 @@
 import pytest
 
 from tests import assert_result
-from presidio_analyzer.predefined_recognizers import CryptoRecognizer
+from presidio_analyzer.predefined_recognizers import CryptoBitcoinRecognizer
 
 
 @pytest.fixture(scope="module")
 def recognizer():
-    return CryptoRecognizer()
+    return CryptoBitcoinRecognizer()
 
 
 @pytest.fixture(scope="module")
 def entities():
-    return ["CRYPTO"]
+    return ["CRYPTO_BTC"]
 
 
 # Generate random address https://www.bitaddress.org/
@@ -21,7 +21,7 @@ def entities():
         # fmt: off
         ## Match
         # Test with valid P2PKH address that starts with 1 and 33 base58 characters
-        ("16Yeky6GMjeNkAiNcBY7ZhrLoMSgg1BoyZ", 1, ((0, 34),),),        
+        ("16Yeky6GMjeNkAiNcBY7ZhrLoMSgg1BoyZ", 1, ((0, 34),),),
         # Test with valid P2SH address that starts with 3 and 33 base58 characters
         ("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy", 1, ((0, 34),),),
         # Test with valid Bech32 address that starts with bc1 and 39 base58 characters

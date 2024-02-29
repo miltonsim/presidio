@@ -18,7 +18,7 @@ CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 BECH32M_CONST = 0x2bc830a3
 
 
-class CryptoRecognizer(PatternRecognizer):
+class CryptoBitcoinRecognizer(PatternRecognizer):
     """Recognize common crypto account numbers using regex + checksum.
 
     :param patterns: List of patterns to be used by this recognizer
@@ -38,7 +38,7 @@ class CryptoRecognizer(PatternRecognizer):
         patterns: Optional[List[Pattern]] = None,
         context: Optional[List[str]] = None,
         supported_language: str = "en",
-        supported_entity: str = "CRYPTO",
+        supported_entity: str = "CRYPTO_BTC",
     ):
         patterns = patterns if patterns else self.PATTERNS
         context = context if context else self.CONTEXT
@@ -66,7 +66,7 @@ class CryptoRecognizer(PatternRecognizer):
                 return False
         elif pattern_text.startswith("bc1"):
             # Bech32 or Bech32m address validation
-            if CryptoRecognizer.validate_bech32_address(pattern_text)[0]:
+            if CryptoBitcoinRecognizer.validate_bech32_address(pattern_text)[0]:
                 return True
         return False
 
@@ -99,8 +99,8 @@ class CryptoRecognizer(PatternRecognizer):
     @staticmethod
     def bech32_verify_checksum(hrp, data):
         """Verify a checksum given HRP and converted data characters."""
-        const = CryptoRecognizer.bech32_polymod(
-            CryptoRecognizer.bech32_hrp_expand(hrp) + data
+        const = CryptoBitcoinRecognizer.bech32_polymod(
+            CryptoBitcoinRecognizer.bech32_hrp_expand(hrp) + data
         )
         if const == 1:
             return BECH32
@@ -122,7 +122,7 @@ class CryptoRecognizer(PatternRecognizer):
             return (None, None, None)
         hrp = bech[:pos]
         data = [CHARSET.find(x) for x in bech[pos+1:]]
-        spec = CryptoRecognizer.bech32_verify_checksum(hrp, data)
+        spec = CryptoBitcoinRecognizer.bech32_verify_checksum(hrp, data)
         if spec is None:
             return (None, None, None)
         return (hrp, data[:-6], spec)
@@ -130,7 +130,7 @@ class CryptoRecognizer(PatternRecognizer):
     @staticmethod
     def validate_bech32_address(address):
         """Validate a Bech32 or Bech32m address."""
-        hrp, data, spec = CryptoRecognizer.bech32_decode(address)
+        hrp, data, spec = CryptoBitcoinRecognizer.bech32_decode(address)
         if hrp is not None and data is not None:
             return True, spec
         return False, None

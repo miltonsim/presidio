@@ -15,7 +15,7 @@ from presidio_analyzer import EntityRecognizer, PatternRecognizer
 from presidio_analyzer.nlp_engine import NlpEngine, SpacyNlpEngine, StanzaNlpEngine
 from presidio_analyzer.predefined_recognizers import (
     CreditCardRecognizer,
-    CryptoRecognizer,
+    CryptoBitcoinRecognizer,
     DateRecognizer,
     EmailRecognizer,
     IbanRecognizer,
